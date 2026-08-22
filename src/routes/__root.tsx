@@ -9,6 +9,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import UserMenu from '../components/shared/user-menu'
+import { getCurrentUser } from '../server/functions/auth'
 
 import appCss from '../styles.css?url'
 
@@ -19,6 +20,10 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  beforeLoad: async () => {
+    const user = await getCurrentUser()
+    return { user }
+  },
   head: () => ({
     meta: [
       {

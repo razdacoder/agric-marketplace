@@ -1,6 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/buyer/cart')({ component: CartPage })
+import { requireRole } from '#/lib/route-guards'
+
+export const Route = createFileRoute('/buyer/cart')({
+  beforeLoad: requireRole('buyer'),
+  component: CartPage,
+})
 
 function CartPage() {
   return (

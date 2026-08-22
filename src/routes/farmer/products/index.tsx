@@ -1,6 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
+import { requireRole } from '#/lib/route-guards'
+
 export const Route = createFileRoute('/farmer/products/')({
+  beforeLoad: requireRole('farmer'),
   component: FarmerProductsPage,
 })
 
