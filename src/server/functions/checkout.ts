@@ -3,7 +3,7 @@ import { and, desc, eq, inArray, sql } from 'drizzle-orm'
 import { z } from 'zod'
 
 import { db } from '#/lib/db'
-import { cartItems, orderItems, orders, products } from '#/lib/db/schema'
+import { cartItems, orderItems, orders, products, userInteractions } from '#/lib/db/schema'
 import { initializeTransaction, verifyTransaction } from '#/lib/paystack'
 import { requireServerRole } from '#/server/functions/session'
 
@@ -122,6 +122,15 @@ export const verifyPayment = createServerFn({ method: 'POST' })
           })
           .where(eq(products.id, item.productId))
       }
+
+      await tx.insert(userInteractions).values(
+        items.map((item) => ({
+          userId: session.user.id,
+          productId: item.productId,
+          type: 'purchase' as const,
+          value: item.quantity.toFixed(2),
+        })),
+      )
 
       await tx.delete(cartItems).where(eq(cartItems.userId, session.user.id))
     })
