@@ -1,13 +1,10 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getRequest } from '@tanstack/react-start/server'
 
-import { auth } from '#/lib/auth'
+import { getServerSession } from '#/server/functions/session'
 
 export const getCurrentUser = createServerFn({ method: 'GET' }).handler(
   async () => {
-    const session = await auth.api.getSession({
-      headers: getRequest().headers,
-    })
+    const session = await getServerSession()
 
     if (!session) {
       return null

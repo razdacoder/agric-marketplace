@@ -21,6 +21,8 @@ import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index
 import { Route as MarketplaceProductIdRouteImport } from './routes/marketplace/$productId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as FarmerProductsIndexRouteImport } from './routes/farmer/products/index'
+import { Route as FarmerProductsProductIdRouteImport } from './routes/farmer/products/$productId'
+import { Route as FarmerProductsNewRouteImport } from './routes/farmer/products/new'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,6 +84,16 @@ const FarmerProductsIndexRoute = FarmerProductsIndexRouteImport.update({
   path: '/farmer/products/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FarmerProductsProductIdRoute = FarmerProductsProductIdRouteImport.update({
+  id: '/farmer/products/$productId',
+  path: '/farmer/products/$productId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FarmerProductsNewRoute = FarmerProductsNewRouteImport.update({
+  id: '/farmer/products/new',
+  path: '/farmer/products/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,6 +107,8 @@ export interface FileRoutesByFullPath {
   '/marketplace/$productId': typeof MarketplaceProductIdRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/farmer/products/$productId': typeof FarmerProductsProductIdRoute
+  '/farmer/products/new': typeof FarmerProductsNewRoute
   '/farmer/products/': typeof FarmerProductsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +123,8 @@ export interface FileRoutesByTo {
   '/marketplace/$productId': typeof MarketplaceProductIdRoute
   '/marketplace': typeof MarketplaceIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/farmer/products/$productId': typeof FarmerProductsProductIdRoute
+  '/farmer/products/new': typeof FarmerProductsNewRoute
   '/farmer/products': typeof FarmerProductsIndexRoute
 }
 export interface FileRoutesById {
@@ -124,6 +140,8 @@ export interface FileRoutesById {
   '/marketplace/$productId': typeof MarketplaceProductIdRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/farmer/products/$productId': typeof FarmerProductsProductIdRoute
+  '/farmer/products/new': typeof FarmerProductsNewRoute
   '/farmer/products/': typeof FarmerProductsIndexRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +158,8 @@ export interface FileRouteTypes {
     | '/marketplace/$productId'
     | '/marketplace/'
     | '/api/auth/$'
+    | '/farmer/products/$productId'
+    | '/farmer/products/new'
     | '/farmer/products/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +174,8 @@ export interface FileRouteTypes {
     | '/marketplace/$productId'
     | '/marketplace'
     | '/api/auth/$'
+    | '/farmer/products/$productId'
+    | '/farmer/products/new'
     | '/farmer/products'
   id:
     | '__root__'
@@ -168,6 +190,8 @@ export interface FileRouteTypes {
     | '/marketplace/$productId'
     | '/marketplace/'
     | '/api/auth/$'
+    | '/farmer/products/$productId'
+    | '/farmer/products/new'
     | '/farmer/products/'
   fileRoutesById: FileRoutesById
 }
@@ -183,6 +207,8 @@ export interface RootRouteChildren {
   MarketplaceProductIdRoute: typeof MarketplaceProductIdRoute
   MarketplaceIndexRoute: typeof MarketplaceIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  FarmerProductsProductIdRoute: typeof FarmerProductsProductIdRoute
+  FarmerProductsNewRoute: typeof FarmerProductsNewRoute
   FarmerProductsIndexRoute: typeof FarmerProductsIndexRoute
 }
 
@@ -272,6 +298,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FarmerProductsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/farmer/products/$productId': {
+      id: '/farmer/products/$productId'
+      path: '/farmer/products/$productId'
+      fullPath: '/farmer/products/$productId'
+      preLoaderRoute: typeof FarmerProductsProductIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/farmer/products/new': {
+      id: '/farmer/products/new'
+      path: '/farmer/products/new'
+      fullPath: '/farmer/products/new'
+      preLoaderRoute: typeof FarmerProductsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -287,6 +327,8 @@ const rootRouteChildren: RootRouteChildren = {
   MarketplaceProductIdRoute: MarketplaceProductIdRoute,
   MarketplaceIndexRoute: MarketplaceIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  FarmerProductsProductIdRoute: FarmerProductsProductIdRoute,
+  FarmerProductsNewRoute: FarmerProductsNewRoute,
   FarmerProductsIndexRoute: FarmerProductsIndexRoute,
 }
 export const routeTree = rootRouteImport
