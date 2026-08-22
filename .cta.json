@@ -1,0 +1,29 @@
+{
+  "projectName": "agric-marketplace",
+  "mode": "file-router",
+  "typescript": true,
+  "tailwind": true,
+  "packageManager": "pnpm",
+  "git": true,
+  "install": true,
+  "intent": false,
+  "addOnOptions": {
+    "drizzle": {
+      "database": "postgresql"
+    }
+  },
+  "projectPreset": "default",
+  "includeExamples": false,
+  "routerOnly": false,
+  "version": 1,
+  "framework": "react",
+  "chosenAddOns": [
+    "drizzle",
+    "neon",
+    "better-auth",
+    "shadcn",
+    "tanstack-query",
+    "eslint",
+    "nitro"
+  ]
+}

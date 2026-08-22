@@ -1,0 +1,3 @@
+-- Seed script run against freshly-provisioned dev databases
+-- (see neon-vite-plugin.ts). Add sample farmers/products/etc. here once
+-- the marketplace schema is stable.
