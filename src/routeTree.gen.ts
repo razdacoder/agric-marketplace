@@ -20,6 +20,7 @@ import { Route as FarmerDashboardRouteImport } from './routes/farmer/dashboard'
 import { Route as MarketplaceIndexRouteImport } from './routes/marketplace/index'
 import { Route as MarketplaceProductIdRouteImport } from './routes/marketplace/$productId'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as BuyerCheckoutCallbackRouteImport } from './routes/buyer/checkout/callback'
 import { Route as FarmerProductsIndexRouteImport } from './routes/farmer/products/index'
 import { Route as FarmerProductsProductIdRouteImport } from './routes/farmer/products/$productId'
 import { Route as FarmerProductsNewRouteImport } from './routes/farmer/products/new'
@@ -79,6 +80,11 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   path: '/api/auth/$',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BuyerCheckoutCallbackRoute = BuyerCheckoutCallbackRouteImport.update({
+  id: '/buyer/checkout/callback',
+  path: '/buyer/checkout/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FarmerProductsIndexRoute = FarmerProductsIndexRouteImport.update({
   id: '/farmer/products/',
   path: '/farmer/products/',
@@ -107,6 +113,7 @@ export interface FileRoutesByFullPath {
   '/marketplace/$productId': typeof MarketplaceProductIdRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/buyer/checkout/callback': typeof BuyerCheckoutCallbackRoute
   '/farmer/products/$productId': typeof FarmerProductsProductIdRoute
   '/farmer/products/new': typeof FarmerProductsNewRoute
   '/farmer/products/': typeof FarmerProductsIndexRoute
@@ -123,6 +130,7 @@ export interface FileRoutesByTo {
   '/marketplace/$productId': typeof MarketplaceProductIdRoute
   '/marketplace': typeof MarketplaceIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/buyer/checkout/callback': typeof BuyerCheckoutCallbackRoute
   '/farmer/products/$productId': typeof FarmerProductsProductIdRoute
   '/farmer/products/new': typeof FarmerProductsNewRoute
   '/farmer/products': typeof FarmerProductsIndexRoute
@@ -140,6 +148,7 @@ export interface FileRoutesById {
   '/marketplace/$productId': typeof MarketplaceProductIdRoute
   '/marketplace/': typeof MarketplaceIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/buyer/checkout/callback': typeof BuyerCheckoutCallbackRoute
   '/farmer/products/$productId': typeof FarmerProductsProductIdRoute
   '/farmer/products/new': typeof FarmerProductsNewRoute
   '/farmer/products/': typeof FarmerProductsIndexRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/marketplace/$productId'
     | '/marketplace/'
     | '/api/auth/$'
+    | '/buyer/checkout/callback'
     | '/farmer/products/$productId'
     | '/farmer/products/new'
     | '/farmer/products/'
@@ -174,6 +184,7 @@ export interface FileRouteTypes {
     | '/marketplace/$productId'
     | '/marketplace'
     | '/api/auth/$'
+    | '/buyer/checkout/callback'
     | '/farmer/products/$productId'
     | '/farmer/products/new'
     | '/farmer/products'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/marketplace/$productId'
     | '/marketplace/'
     | '/api/auth/$'
+    | '/buyer/checkout/callback'
     | '/farmer/products/$productId'
     | '/farmer/products/new'
     | '/farmer/products/'
@@ -207,6 +219,7 @@ export interface RootRouteChildren {
   MarketplaceProductIdRoute: typeof MarketplaceProductIdRoute
   MarketplaceIndexRoute: typeof MarketplaceIndexRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  BuyerCheckoutCallbackRoute: typeof BuyerCheckoutCallbackRoute
   FarmerProductsProductIdRoute: typeof FarmerProductsProductIdRoute
   FarmerProductsNewRoute: typeof FarmerProductsNewRoute
   FarmerProductsIndexRoute: typeof FarmerProductsIndexRoute
@@ -291,6 +304,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/buyer/checkout/callback': {
+      id: '/buyer/checkout/callback'
+      path: '/buyer/checkout/callback'
+      fullPath: '/buyer/checkout/callback'
+      preLoaderRoute: typeof BuyerCheckoutCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/farmer/products/': {
       id: '/farmer/products/'
       path: '/farmer/products'
@@ -327,6 +347,7 @@ const rootRouteChildren: RootRouteChildren = {
   MarketplaceProductIdRoute: MarketplaceProductIdRoute,
   MarketplaceIndexRoute: MarketplaceIndexRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  BuyerCheckoutCallbackRoute: BuyerCheckoutCallbackRoute,
   FarmerProductsProductIdRoute: FarmerProductsProductIdRoute,
   FarmerProductsNewRoute: FarmerProductsNewRoute,
   FarmerProductsIndexRoute: FarmerProductsIndexRoute,

@@ -15,3 +15,13 @@ export async function requireServerSession() {
 
   return session
 }
+
+export async function requireServerRole(role: 'farmer' | 'buyer' | 'admin') {
+  const session = await requireServerSession()
+
+  if (session.user.role !== role) {
+    throw new Error(`Only ${role}s can perform this action`)
+  }
+
+  return session
+}

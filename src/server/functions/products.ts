@@ -5,17 +5,7 @@ import { z } from 'zod'
 import { db } from '#/lib/db'
 import { products } from '#/lib/db/schema'
 import { insertProductSchema, updateProductSchema } from '#/lib/validators/products'
-import { requireServerSession } from '#/server/functions/session'
-
-async function requireFarmer() {
-  const session = await requireServerSession()
-
-  if (session.user.role !== 'farmer') {
-    throw new Error('Only farmers can manage product listings')
-  }
-
-  return session
-}
+import { requireServerRole } from '#/server/functions/session'
 
 async function requireOwnedProduct(productId: string, farmerId: string) {
   const rows = await db
@@ -34,7 +24,7 @@ async function requireOwnedProduct(productId: string, farmerId: string) {
 
 export const listFarmerProducts = createServerFn({ method: 'GET' }).handler(
   async () => {
-    const session = await requireFarmer()
+    const session = await requireServerRole('farmer')
 
     return db
       .select()
@@ -47,14 +37,14 @@ export const listFarmerProducts = createServerFn({ method: 'GET' }).handler(
 export const getFarmerProduct = createServerFn({ method: 'GET' })
   .validator(z.object({ productId: z.uuid() }))
   .handler(async ({ data }) => {
-    const session = await requireFarmer()
+    const session = await requireServerRole('farmer')
     return requireOwnedProduct(data.productId, session.user.id)
   })
 
 export const createProduct = createServerFn({ method: 'POST' })
   .validator(insertProductSchema)
   .handler(async ({ data }) => {
-    const session = await requireFarmer()
+    const session = await requireServerRole('farmer')
 
     const [product] = await db
       .insert(products)
@@ -69,7 +59,7 @@ export const updateProduct = createServerFn({ method: 'POST' })
     z.object({ productId: z.uuid(), data: updateProductSchema }),
   )
   .handler(async ({ data }) => {
-    const session = await requireFarmer()
+    const session = await requireServerRole('farmer')
     await requireOwnedProduct(data.productId, session.user.id)
 
     const [product] = await db
@@ -84,7 +74,7 @@ export const updateProduct = createServerFn({ method: 'POST' })
 export const deleteProduct = createServerFn({ method: 'POST' })
   .validator(z.object({ productId: z.uuid() }))
   .handler(async ({ data }) => {
-    const session = await requireFarmer()
+    const session = await requireServerRole('farmer')
     await requireOwnedProduct(data.productId, session.user.id)
 
     await db.delete(products).where(eq(products.id, data.productId))

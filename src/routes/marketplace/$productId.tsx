@@ -1,12 +1,16 @@
 import { useEffect, useState } from 'react'
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
+import { authClient } from '#/lib/auth-client'
 import {
   getMarketplaceProduct,
   recordProductView,
 } from '#/server/functions/marketplace'
+import { addToCart } from '#/server/functions/cart'
 import { Badge } from '#/components/ui/badge'
 import { Button } from '#/components/ui/button'
+import { Input } from '#/components/ui/input'
 
 export const Route = createFileRoute('/marketplace/$productId')({
   loader: ({ params }) =>
@@ -81,13 +85,74 @@ function ProductDetailPage() {
         <p className="text-sm text-muted-foreground">
           Sold by {product.farmerName}
         </p>
-        <div className="mt-2 flex flex-col gap-1">
-          <Button disabled>Add to cart</Button>
-          <p className="text-xs text-muted-foreground">
-            Cart &amp; checkout land in Phase 5.
-          </p>
-        </div>
+        <AddToCartSection productId={product.id} maxQuantity={product.quantity} />
       </div>
+    </div>
+  )
+}
+
+function AddToCartSection({
+  productId,
+  maxQuantity,
+}: {
+  productId: string
+  maxQuantity: number
+}) {
+  const { data: session, isPending } = authClient.useSession()
+  const queryClient = useQueryClient()
+  const [quantity, setQuantity] = useState(1)
+  const [added, setAdded] = useState(false)
+
+  const mutation = useMutation({
+    mutationFn: () => addToCart({ data: { productId, quantity } }),
+    onSuccess: () => {
+      setAdded(true)
+      void queryClient.invalidateQueries({ queryKey: ['cart'] })
+    },
+  })
+
+  if (isPending) return null
+
+  if (!session?.user) {
+    return (
+      <div className="mt-2">
+        <Button asChild variant="outline">
+          <Link to="/auth/login">Log in to purchase</Link>
+        </Button>
+      </div>
+    )
+  }
+
+  if (session.user.role !== 'buyer') {
+    return null
+  }
+
+  if (maxQuantity === 0) {
+    return (
+      <p className="mt-2 text-sm text-muted-foreground">Out of stock.</p>
+    )
+  }
+
+  return (
+    <div className="mt-2 flex items-center gap-2">
+      <Input
+        type="number"
+        min={1}
+        max={maxQuantity}
+        value={quantity}
+        onChange={(e) =>
+          setQuantity(Math.min(maxQuantity, Math.max(1, Number(e.target.value))))
+        }
+        className="w-20"
+      />
+      <Button onClick={() => mutation.mutate()} disabled={mutation.isPending}>
+        {added ? 'Added!' : mutation.isPending ? 'Adding…' : 'Add to cart'}
+      </Button>
+      {added ? (
+        <Link to="/buyer/cart" className="text-sm underline">
+          View cart
+        </Link>
+      ) : null}
     </div>
   )
 }
