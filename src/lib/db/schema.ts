@@ -196,18 +196,24 @@ export const orderItems = pgTable('order_items', {
   price: numeric('price', { precision: 12, scale: 2 }).notNull(),
 })
 
-export const reviews = pgTable('reviews', {
-  id: uuid('id').primaryKey().defaultRandom(),
-  buyerId: text('buyer_id')
-    .notNull()
-    .references(() => user.id, { onDelete: 'cascade' }),
-  productId: uuid('product_id')
-    .notNull()
-    .references(() => products.id, { onDelete: 'cascade' }),
-  rating: integer('rating').notNull(),
-  comment: text('comment'),
-  createdAt: timestamp('created_at').notNull().defaultNow(),
-})
+export const reviews = pgTable(
+  'reviews',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    buyerId: text('buyer_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    productId: uuid('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    rating: integer('rating').notNull(),
+    comment: text('comment'),
+    createdAt: timestamp('created_at').notNull().defaultNow(),
+  },
+  (table) => [
+    uniqueIndex('reviews_buyer_product_idx').on(table.buyerId, table.productId),
+  ],
+)
 
 export const userInteractions = pgTable('user_interactions', {
   id: uuid('id').primaryKey().defaultRandom(),

@@ -1,5 +1,6 @@
 import { Link } from '@tanstack/react-router'
 
+import { StarRatingDisplay } from '#/components/reviews/star-rating'
 import { Badge } from '#/components/ui/badge'
 import { Card, CardContent } from '#/components/ui/card'
 
@@ -11,6 +12,7 @@ interface MarketplaceProductCardProps {
     category: string
     location: string
     images: Array<string>
+    rating: { average: number; count: number }
   }
 }
 
@@ -46,6 +48,10 @@ export function MarketplaceProductCard({
           </div>
           <p className="text-sm font-semibold">₦{product.price}</p>
           <p className="text-xs text-muted-foreground">{product.location}</p>
+          <StarRatingDisplay
+            average={product.rating.average}
+            count={product.rating.count}
+          />
         </CardContent>
       </Card>
     </Link>

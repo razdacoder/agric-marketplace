@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 import { requireRole } from '#/lib/route-guards'
 import { listBuyerOrders } from '#/server/functions/checkout'
@@ -39,12 +39,25 @@ function OrdersPage() {
               {order.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex justify-between text-sm text-muted-foreground"
+                  className="flex items-center justify-between text-sm text-muted-foreground"
                 >
                   <span>
                     {item.product.title} × {item.quantity}
                   </span>
-                  <span>₦{item.price}</span>
+                  <div className="flex items-center gap-3">
+                    <span>₦{item.price}</span>
+                    {order.status === 'paid' ||
+                    order.status === 'shipped' ||
+                    order.status === 'completed' ? (
+                      <Link
+                        to="/marketplace/$productId"
+                        params={{ productId: item.product.id }}
+                        className="text-xs underline"
+                      >
+                        Rate this product
+                      </Link>
+                    ) : null}
+                  </div>
                 </div>
               ))}
               <p className="mt-2 text-right font-semibold">

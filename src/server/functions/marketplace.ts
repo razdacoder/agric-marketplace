@@ -5,6 +5,7 @@ import { z } from 'zod'
 import { db } from '#/lib/db'
 import { products, user, userInteractions } from '#/lib/db/schema'
 import { marketplaceFiltersSchema } from '#/lib/validators/marketplace'
+import { getRatingStatsForProducts } from '#/server/functions/rating-stats'
 import { getServerSession } from '#/server/functions/session'
 
 export const listMarketplaceProducts = createServerFn({ method: 'GET' })
@@ -47,7 +48,20 @@ export const listMarketplaceProducts = createServerFn({ method: 'GET' })
         .where(where),
     ])
 
-    return { items, total: count, page: data.page, pageSize: data.pageSize }
+    const ratingStats = await getRatingStatsForProducts(
+      items.map((item) => item.id),
+    )
+    const itemsWithRatings = items.map((item) => ({
+      ...item,
+      rating: ratingStats.get(item.id) ?? { average: 0, count: 0 },
+    }))
+
+    return {
+      items: itemsWithRatings,
+      total: count,
+      page: data.page,
+      pageSize: data.pageSize,
+    }
   })
 
 export const getMarketplaceProduct = createServerFn({ method: 'GET' })
@@ -70,7 +84,13 @@ export const getMarketplaceProduct = createServerFn({ method: 'GET' })
       throw new Error('Product not found')
     }
 
-    return { ...row.product, farmerName: row.farmerName }
+    const ratingStats = await getRatingStatsForProducts([row.product.id])
+
+    return {
+      ...row.product,
+      farmerName: row.farmerName,
+      rating: ratingStats.get(row.product.id) ?? { average: 0, count: 0 },
+    }
   })
 
 export const recordProductView = createServerFn({ method: 'POST' })
