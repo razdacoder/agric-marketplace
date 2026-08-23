@@ -93,6 +93,21 @@ export const getMarketplaceProduct = createServerFn({ method: 'GET' })
     }
   })
 
+export const getMarketplaceStats = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    const [{ productCount, farmerCount, categoryCount }] = await db
+      .select({
+        productCount: sql<number>`count(*)::int`,
+        farmerCount: sql<number>`count(distinct ${products.farmerId})::int`,
+        categoryCount: sql<number>`count(distinct ${products.category})::int`,
+      })
+      .from(products)
+      .where(eq(products.status, 'approved'))
+
+    return { productCount, farmerCount, categoryCount }
+  },
+)
+
 export const recordProductView = createServerFn({ method: 'POST' })
   .validator(z.object({ productId: z.uuid() }))
   .handler(async ({ data }) => {
