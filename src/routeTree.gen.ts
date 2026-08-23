@@ -10,7 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AccountSuspendedRouteImport } from './routes/account-suspended'
 import { Route as AdminDashboardRouteImport } from './routes/admin/dashboard'
+import { Route as AdminProductsRouteImport } from './routes/admin/products'
+import { Route as AdminUsersRouteImport } from './routes/admin/users'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as BuyerCartRouteImport } from './routes/buyer/cart'
@@ -30,9 +33,24 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountSuspendedRoute = AccountSuspendedRouteImport.update({
+  id: '/account-suspended',
+  path: '/account-suspended',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminDashboardRoute = AdminDashboardRouteImport.update({
   id: '/admin/dashboard',
   path: '/admin/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/admin/products',
+  path: '/admin/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -103,7 +121,10 @@ const FarmerProductsNewRoute = FarmerProductsNewRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account-suspended': typeof AccountSuspendedRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/buyer/cart': typeof BuyerCartRoute
@@ -120,7 +141,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account-suspended': typeof AccountSuspendedRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/buyer/cart': typeof BuyerCartRoute
@@ -138,7 +162,10 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account-suspended': typeof AccountSuspendedRoute
   '/admin/dashboard': typeof AdminDashboardRoute
+  '/admin/products': typeof AdminProductsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
   '/buyer/cart': typeof BuyerCartRoute
@@ -157,7 +184,10 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account-suspended'
     | '/admin/dashboard'
+    | '/admin/products'
+    | '/admin/users'
     | '/auth/login'
     | '/auth/register'
     | '/buyer/cart'
@@ -174,7 +204,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/account-suspended'
     | '/admin/dashboard'
+    | '/admin/products'
+    | '/admin/users'
     | '/auth/login'
     | '/auth/register'
     | '/buyer/cart'
@@ -191,7 +224,10 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/account-suspended'
     | '/admin/dashboard'
+    | '/admin/products'
+    | '/admin/users'
     | '/auth/login'
     | '/auth/register'
     | '/buyer/cart'
@@ -209,7 +245,10 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountSuspendedRoute: typeof AccountSuspendedRoute
   AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminProductsRoute: typeof AdminProductsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
   BuyerCartRoute: typeof BuyerCartRoute
@@ -234,11 +273,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account-suspended': {
+      id: '/account-suspended'
+      path: '/account-suspended'
+      fullPath: '/account-suspended'
+      preLoaderRoute: typeof AccountSuspendedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/dashboard': {
       id: '/admin/dashboard'
       path: '/admin/dashboard'
       fullPath: '/admin/dashboard'
       preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/admin/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/login': {
@@ -337,7 +397,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountSuspendedRoute: AccountSuspendedRoute,
   AdminDashboardRoute: AdminDashboardRoute,
+  AdminProductsRoute: AdminProductsRoute,
+  AdminUsersRoute: AdminUsersRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,
   BuyerCartRoute: BuyerCartRoute,

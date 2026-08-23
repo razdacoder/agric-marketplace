@@ -36,6 +36,12 @@ export const auth = betterAuth({
         defaultValue: 'buyer',
         input: true,
       },
+      banned: {
+        type: 'boolean',
+        required: false,
+        defaultValue: false,
+        input: false,
+      },
     },
   },
   plugins: [tanstackStartCookies()],

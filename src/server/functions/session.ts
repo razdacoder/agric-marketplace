@@ -13,6 +13,10 @@ export async function requireServerSession() {
     throw new Error('Not authenticated')
   }
 
+  if (session.user.banned) {
+    throw new Error('Your account has been suspended')
+  }
+
   return session
 }
 

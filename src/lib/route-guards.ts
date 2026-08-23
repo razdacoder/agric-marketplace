@@ -9,13 +9,17 @@ const dashboardPathByRole: Record<Role, string> = {
 }
 
 interface RouteGuardContext {
-  user: { role: string } | null
+  user: { role: string; banned?: boolean | null } | null
 }
 
 export function requireRole(...roles: Array<Role>) {
   return ({ context }: { context: RouteGuardContext }) => {
     if (!context.user) {
       throw redirect({ to: '/auth/login' })
+    }
+
+    if (context.user.banned) {
+      throw redirect({ to: '/account-suspended' })
     }
 
     const userRole = context.user.role as Role
