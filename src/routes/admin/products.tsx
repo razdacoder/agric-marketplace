@@ -46,10 +46,10 @@ function AdminProductsPage() {
   })
 
   return (
-    <div className="mx-auto max-w-3xl p-8">
+    <div className="mx-auto max-w-3xl p-4 sm:p-8">
       <h1 className="mb-6 text-2xl font-semibold">Moderate listings</h1>
 
-      <div className="mb-6 flex gap-3">
+      <div className="mb-6 flex flex-wrap gap-3">
         <Input
           placeholder="Search by title…"
           value={q}
@@ -73,10 +73,22 @@ function AdminProductsPage() {
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : null}
 
+      {!isLoading && adminProducts?.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          No listings match your filters.
+        </p>
+      ) : null}
+
+      {statusMutation.isError ? (
+        <p className="mb-4 text-sm text-destructive">
+          {statusMutation.error.message}
+        </p>
+      ) : null}
+
       <div className="flex flex-col gap-3">
         {adminProducts?.map((product) => (
           <Card key={product.id}>
-            <CardContent className="flex items-center justify-between gap-4 pt-6">
+            <CardContent className="flex flex-col items-start gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium">
                   {product.title}{' '}
@@ -89,7 +101,7 @@ function AdminProductsPage() {
                   {product.farmerName}
                 </p>
               </div>
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 {product.status !== 'approved' ? (
                   <Button
                     size="sm"

@@ -52,10 +52,10 @@ function AdminUsersPage() {
   })
 
   return (
-    <div className="mx-auto max-w-3xl p-8">
+    <div className="mx-auto max-w-3xl p-4 sm:p-8">
       <h1 className="mb-6 text-2xl font-semibold">Manage users</h1>
 
-      <div className="mb-6 flex gap-3">
+      <div className="mb-6 flex flex-wrap gap-3">
         <Input
           placeholder="Search by name or email…"
           value={q}
@@ -79,10 +79,24 @@ function AdminUsersPage() {
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : null}
 
+      {!isLoading && users?.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          No users match your filters.
+        </p>
+      ) : null}
+
+      {roleMutation.isError || banMutation.isError ? (
+        <p className="mb-4 text-sm text-destructive">
+          {roleMutation.error?.message ??
+            banMutation.error?.message ??
+            'Something went wrong'}
+        </p>
+      ) : null}
+
       <div className="flex flex-col gap-3">
         {users?.map((u) => (
           <Card key={u.id}>
-            <CardContent className="flex items-center justify-between gap-4 pt-6">
+            <CardContent className="flex flex-col items-start gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="font-medium">
                   {u.name}{' '}
@@ -94,7 +108,7 @@ function AdminUsersPage() {
                 </p>
                 <p className="text-sm text-muted-foreground">{u.email}</p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Select
                   value={u.role}
                   onValueChange={(value) =>

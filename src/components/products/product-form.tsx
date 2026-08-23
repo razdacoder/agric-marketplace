@@ -64,7 +64,11 @@ export function ProductForm({
       return
     }
 
-    await onSubmit(result.data)
+    try {
+      await onSubmit(result.data)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong')
+    }
   }
 
   return (

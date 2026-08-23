@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import { authClient } from '#/lib/auth-client'
 import {
   productReviewsQueryOptions,
   reviewEligibilityQueryOptions,
@@ -107,16 +106,16 @@ function ProductDetailPage() {
 }
 
 function ReviewsSection({ productId }: { productId: string }) {
-  const { data: session } = authClient.useSession()
+  const { user } = Route.useRouteContext()
   const { data: reviewData } = useQuery(productReviewsQueryOptions(productId))
   const { data: eligibility } = useQuery({
     ...reviewEligibilityQueryOptions(productId),
-    enabled: session?.user.role === 'buyer',
+    enabled: user?.role === 'buyer',
   })
 
   return (
     <div className="mt-4 flex flex-col gap-6 border-t pt-6">
-      {session?.user.role === 'buyer' ? (
+      {user?.role === 'buyer' ? (
         <ReviewForm productId={productId} eligibility={eligibility} />
       ) : null}
 
@@ -221,7 +220,7 @@ function AddToCartSection({
   productId: string
   maxQuantity: number
 }) {
-  const { data: session, isPending } = authClient.useSession()
+  const { user } = Route.useRouteContext()
   const queryClient = useQueryClient()
   const [quantity, setQuantity] = useState(1)
   const [added, setAdded] = useState(false)
@@ -234,9 +233,7 @@ function AddToCartSection({
     },
   })
 
-  if (isPending) return null
-
-  if (!session?.user) {
+  if (!user) {
     return (
       <div className="mt-2">
         <Button asChild variant="outline">
@@ -246,7 +243,7 @@ function AddToCartSection({
     )
   }
 
-  if (session.user.role !== 'buyer') {
+  if (user.role !== 'buyer') {
     return null
   }
 

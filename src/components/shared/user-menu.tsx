@@ -9,18 +9,15 @@ const dashboardPathByRole: Record<string, string> = {
   admin: '/admin/dashboard',
 }
 
-export default function UserMenu() {
+interface UserMenuProps {
+  user: { role: string } | null
+}
+
+export default function UserMenu({ user }: UserMenuProps) {
   const navigate = useNavigate()
-  const { data: session, isPending } = authClient.useSession()
 
-  if (isPending) {
-    return (
-      <div className="h-8 w-8 rounded-full bg-neutral-100 dark:bg-neutral-800 animate-pulse" />
-    )
-  }
-
-  if (session?.user) {
-    const dashboardPath = dashboardPathByRole[session.user.role] ?? '/'
+  if (user) {
+    const dashboardPath = dashboardPathByRole[user.role] ?? '/'
 
     return (
       <div className="flex items-center gap-3">
