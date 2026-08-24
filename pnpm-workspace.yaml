@@ -4,3 +4,6 @@ allowBuilds:
   better-sqlite3: true
   unrs-resolver: true
   '@parcel/watcher': true
+
+overrides:
+  srvx: ^0.12.7
