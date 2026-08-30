@@ -14,7 +14,7 @@ const config = defineConfig({
     devtools(),
     neon,
     nitro({
-      config: { rollupConfig: { external: [/^@sentry\//, /^@opentelemetry\//] } },
+      rollupConfig: { external: [/^@sentry\//, /^@opentelemetry\//] },
     }),
     tailwindcss(),
     tanstackStart(),
